@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
-import { motion, AnimatePresence } from 'framer-motion';
 import { format } from 'date-fns';
+import { toast } from 'react-toastify';
+import TaskForm from './TaskForm';
 import {
   CheckCircleIcon,
   ClockIcon,
@@ -26,14 +27,11 @@ const TaskItem = ({ task, onEdit, onDelete, provided, snapshot }) => {
       : 'text-gray-500';
 
   return (
-    <motion.div
+    <div
       ref={provided.innerRef}
       {...provided.draggableProps}
       {...provided.dragHandleProps}
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -20 }}
-      className={`card mb-4 ${
+      className={`card mb-4 transform transition-all duration-200 ${
         snapshot.isDragging ? 'shadow-lg ring-2 ring-primary-500' : ''
       }`}
     >
@@ -87,7 +85,7 @@ const TaskItem = ({ task, onEdit, onDelete, provided, snapshot }) => {
           />
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 };
 
@@ -158,8 +156,8 @@ const TaskList = () => {
   };
 
   const handleEdit = (task) => {
-    // Implement edit modal/form
-    console.log('Edit task:', task);
+    setEditingTask(task);
+    setIsTaskFormOpen(true);
   };
 
   const handleDelete = async (taskId) => {
@@ -171,14 +169,63 @@ const TaskList = () => {
     }
   };
 
+  const [isTaskFormOpen, setIsTaskFormOpen] = useState(false);
+  const [editingTask, setEditingTask] = useState(null);
+
+  const handleCreateTask = async (taskData) => {
+    try {
+      const newTask = await TaskService.createTask({
+        ...taskData,
+        progress: 0,
+        tags: [],
+      });
+      setTasks([newTask, ...tasks]);
+      toast.success('Task created successfully!');
+    } catch (error) {
+      console.error('Error creating task:', error);
+      toast.error('Failed to create task');
+    }
+  };
+
+  const handleUpdateTask = async (taskId, taskData) => {
+    try {
+      const updatedTask = await TaskService.updateTask(taskId, taskData);
+      setTasks(tasks.map(task => task.id === taskId ? updatedTask : task));
+      toast.success('Task updated successfully!');
+    } catch (error) {
+      console.error('Error updating task:', error);
+      toast.error('Failed to update task');
+    }
+  };
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
           My Tasks
         </h1>
-        <button className="btn-primary">New Task</button>
+        <button 
+          onClick={() => {
+            setEditingTask(null);
+            setIsTaskFormOpen(true);
+          }}
+          className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+        >
+          New Task
+        </button>
       </div>
+
+      <TaskForm
+        isOpen={isTaskFormOpen}
+        onClose={() => {
+          setIsTaskFormOpen(false);
+          setEditingTask(null);
+        }}
+        onSubmit={editingTask ? 
+          (data) => handleUpdateTask(editingTask.id, data) : 
+          handleCreateTask}
+        initialTask={editingTask}
+      />
 
       <div className="flex space-x-4">
         <input
@@ -220,7 +267,7 @@ const TaskList = () => {
         <Droppable droppableId="tasks">
           {(provided) => (
             <div {...provided.droppableProps} ref={provided.innerRef}>
-              <AnimatePresence>
+              <div>
                 {filteredTasks.map((task, index) => (
                   <Draggable
                     key={task.id}
@@ -238,7 +285,7 @@ const TaskList = () => {
                     )}
                   </Draggable>
                 ))}
-              </AnimatePresence>
+              </div>
               {provided.placeholder}
             </div>
           )}

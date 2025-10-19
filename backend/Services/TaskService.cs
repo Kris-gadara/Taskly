@@ -13,9 +13,17 @@ namespace TasklyApi.Services
         }
 
         public Task<List<TaskItem>> GetAllAsync() => _repository.GetAllAsync();
+
+        public Task<List<TaskItem>> GetUserTasksAsync(string userId) => _repository.GetUserTasksAsync(userId);
+
         public Task<TaskItem?> GetByIdAsync(string id) => _repository.GetByIdAsync(id);
+
         public Task CreateAsync(TaskItem task) => _repository.CreateAsync(task);
+
         public Task UpdateAsync(string id, TaskItem task) => _repository.UpdateAsync(id, task);
+
         public Task DeleteAsync(string id) => _repository.DeleteAsync(id);
+
+        public Task CompleteTaskAsync(string id) => _repository.CompleteTaskAsync(id);
     }
 }

@@ -16,31 +16,28 @@ namespace TasklyApi.Models
         public string Description { get; set; } = string.Empty;
 
         [BsonElement("status")]
-        public string Status { get; set; } = "pending";
+        public string Status { get; set; } = "NotStarted";
+
+        [BsonElement("isCompleted")]
+        public bool IsCompleted { get; set; }
 
         [BsonElement("priority")]
-        public string Priority { get; set; } = "medium";
+        public string Priority { get; set; } = "Medium";
 
         [BsonElement("dueDate")]
-        public DateTime DueDate { get; set; }
+        public DateTime DueDate { get; set; } = DateTime.UtcNow.AddDays(1);
+
+        [BsonElement("completedDate")]
+        public DateTime? CompletedDate { get; set; }
 
         [BsonElement("assignedUserId")]
         [BsonRepresentation(BsonType.ObjectId)]
         public string AssignedUserId { get; set; } = string.Empty;
 
-        [BsonElement("progress")]
-        public int Progress { get; set; }
-
-        [BsonElement("tags")]
-        public string[] Tags { get; set; } = Array.Empty<string>();
-
         [BsonElement("createdAt")]
-        public DateTime CreatedAt { get; set; }
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
         [BsonElement("updatedAt")]
-        public DateTime UpdatedAt { get; set; }
-
-        [BsonElement("order")]
-        public int Order { get; set; }
+        public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
     }
 }

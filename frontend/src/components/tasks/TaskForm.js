@@ -1,29 +1,25 @@
 import React, { useState, useEffect } from 'react';
 import { Dialog } from '@headlessui/react';
-import { motion } from 'framer-motion';
-import { format } from 'date-fns';
+import { XMarkIcon } from '@heroicons/react/24/outline';
 
-const TaskForm = ({ isOpen, onClose, onSubmit, task = null }) => {
-  const [formData, setFormData] = useState({
+const TaskForm = ({ isOpen, onClose, onSubmit, initialTask }) => {
+  const [formData, setFormData] = useState(initialTask || {
     title: '',
     description: '',
-    priority: 'medium',
-    dueDate: format(new Date(), 'yyyy-MM-dd'),
+    priority: 'Low',
+    dueDate: new Date(),
     tags: [],
-    status: 'pending',
+    status: 'ToDo',
     progress: 0,
   });
 
   const [tagInput, setTagInput] = useState('');
 
   useEffect(() => {
-    if (task) {
-      setFormData({
-        ...task,
-        dueDate: format(new Date(task.dueDate), 'yyyy-MM-dd'),
-      });
+    if (initialTask) {
+      setFormData(initialTask);
     }
-  }, [task]);
+  }, [initialTask]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -60,14 +56,19 @@ const TaskForm = ({ isOpen, onClose, onSubmit, task = null }) => {
       <div className="flex min-h-screen items-center justify-center">
         <Dialog.Overlay className="fixed inset-0 bg-black opacity-30" />
 
-        <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          exit={{ opacity: 0, scale: 0.95 }}
-          className="relative w-full max-w-md rounded-xl bg-white p-6 shadow-xl dark:bg-gray-800"
-        >
+        <div className="relative w-full max-w-md rounded-xl bg-white p-6 shadow-xl dark:bg-gray-800">
           <Dialog.Title className="text-xl font-semibold text-gray-900 dark:text-white">
-            {task ? 'Edit Task' : 'Create New Task'}
+            <div className="flex justify-between items-center">
+              <span>{initialTask ? 'Edit Task' : 'Create New Task'}</span>
+              <button
+                type="button"
+                onClick={onClose}
+                className="text-gray-400 hover:text-gray-500"
+              >
+                <XMarkIcon className="h-6 w-6" />
+              </button>
+            </div>
+          </Dialog.Title>
           </Dialog.Title>
 
           <form onSubmit={handleSubmit} className="mt-4 space-y-4">
@@ -133,45 +134,43 @@ const TaskForm = ({ isOpen, onClose, onSubmit, task = null }) => {
               </div>
             </div>
 
-            {task && (
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                    Status
-                  </label>
-                  <select
-                    className="input-field mt-1"
-                    value={formData.status}
-                    onChange={(e) =>
-                      setFormData({ ...formData, status: e.target.value })
-                    }
-                  >
-                    <option value="pending">Pending</option>
-                    <option value="in-progress">In Progress</option>
-                    <option value="completed">Completed</option>
-                  </select>
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                    Progress
-                  </label>
-                  <input
-                    type="number"
-                    min="0"
-                    max="100"
-                    className="input-field mt-1"
-                    value={formData.progress}
-                    onChange={(e) =>
-                      setFormData({
-                        ...formData,
-                        progress: parseInt(e.target.value),
-                      })
-                    }
-                  />
-                </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                  Status
+                </label>
+                <select
+                  className="input-field mt-1"
+                  value={formData.status}
+                  onChange={(e) =>
+                    setFormData({ ...formData, status: e.target.value })
+                  }
+                >
+                  <option value="ToDo">To Do</option>
+                  <option value="InProgress">In Progress</option>
+                  <option value="Done">Done</option>
+                </select>
               </div>
-            )}
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                  Progress
+                </label>
+                <input
+                  type="number"
+                  min="0"
+                  max="100"
+                  className="input-field mt-1"
+                  value={formData.progress}
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      progress: parseInt(e.target.value),
+                    })
+                  }
+                />
+              </div>
+            </div>
 
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
@@ -227,11 +226,11 @@ const TaskForm = ({ isOpen, onClose, onSubmit, task = null }) => {
                 Cancel
               </button>
               <button type="submit" className="btn-primary">
-                {task ? 'Update Task' : 'Create Task'}
+                {initialTask ? 'Update Task' : 'Create Task'}
               </button>
             </div>
           </form>
-        </motion.div>
+        </div>
       </div>
     </Dialog>
   );

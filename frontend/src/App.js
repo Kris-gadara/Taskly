@@ -2,8 +2,8 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { AuthProvider } from './contexts/AuthContext';
-import { ThemeProvider } from './contexts/ThemeContext';
+import { AuthProvider } from './context/AuthContext';
+import { ThemeProvider } from './context/ThemeContext';
 import Layout from './components/layout/Layout';
 import Dashboard from './components/dashboard/Dashboard';
 import TaskList from './components/tasks/TaskList';
@@ -13,7 +13,8 @@ import { Register } from './pages/Register';
 import { Profile } from './pages/Profile';
 import Settings from './components/settings/Settings';
 import { ProtectedRoute } from './components/ProtectedRoute';
-import { Toaster } from 'react-hot-toast';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import './App.css';
 
@@ -77,27 +78,17 @@ function App() {
                 <Route path="*" element={<Navigate to="/login" replace />} />
               </Routes>
 
-              <Toaster
+              <ToastContainer
                 position="top-right"
-                toastOptions={{
-                  duration: 5000,
-                  style: {
-                    background: '#333',
-                    color: '#fff',
-                  },
-                  success: {
-                    iconTheme: {
-                      primary: '#22c55e',
-                      secondary: '#fff',
-                    },
-                  },
-                  error: {
-                    iconTheme: {
-                      primary: '#ef4444',
-                      secondary: '#fff',
-                    },
-                  },
-                }}
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="dark"
               />
             </div>
           </AuthProvider>
