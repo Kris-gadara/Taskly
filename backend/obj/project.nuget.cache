@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "ifYEce+zSb0=",
+  "dgSpecHash": "fAnpdRVChg0=",
   "success": true,
-  "projectFilePath": "k:\\Projects\\TASK_MANAGER_DOTNET\\Workspace\\backend\\TaskManagerApi.csproj",
+  "projectFilePath": "K:\\Projects\\TASK_MANAGER_DOTNET\\Taskly\\backend\\TaskManagerApi.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\LENOVO GAMING\\.nuget\\packages\\bcrypt.net-next\\4.0.3\\bcrypt.net-next.4.0.3.nupkg.sha512",
     "C:\\Users\\LENOVO GAMING\\.nuget\\packages\\dnsclient\\1.6.1\\dnsclient.1.6.1.nupkg.sha512",

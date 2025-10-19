@@ -1545,11 +1545,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "k:\\Projects\\TASK_MANAGER_DOTNET\\Workspace\\backend\\TaskManagerApi.csproj",
+      "projectUniqueName": "K:\\Projects\\TASK_MANAGER_DOTNET\\Taskly\\backend\\TaskManagerApi.csproj",
       "projectName": "TaskManagerApi",
-      "projectPath": "k:\\Projects\\TASK_MANAGER_DOTNET\\Workspace\\backend\\TaskManagerApi.csproj",
+      "projectPath": "K:\\Projects\\TASK_MANAGER_DOTNET\\Taskly\\backend\\TaskManagerApi.csproj",
       "packagesPath": "C:\\Users\\LENOVO GAMING\\.nuget\\packages\\",
-      "outputPath": "k:\\Projects\\TASK_MANAGER_DOTNET\\Workspace\\backend\\obj\\",
+      "outputPath": "K:\\Projects\\TASK_MANAGER_DOTNET\\Taskly\\backend\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\LENOVO GAMING\\AppData\\Roaming\\NuGet\\NuGet.Config"
