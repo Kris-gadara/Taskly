@@ -9,12 +9,17 @@ using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Configure MongoDB settings
+// Configure MongoDB
 var mongoSettings = builder.Configuration.GetSection("MongoDbSettings").Get<MongoDbSettings>() ?? new MongoDbSettings();
 builder.Services.AddSingleton(mongoSettings);
+var mongoClient = new MongoDB.Driver.MongoClient(mongoSettings.ConnectionString);
+var mongoDatabase = mongoClient.GetDatabase(mongoSettings.DatabaseName);
+builder.Services.AddSingleton(mongoDatabase);
 builder.Services.AddSingleton<ITaskRepository, TaskRepository>();
 builder.Services.AddSingleton<TaskService>();
 builder.Services.AddSingleton<IUserRepository, UserRepository>();
+builder.Services.AddSingleton<IRefreshTokenRepository, RefreshTokenRepository>();
+builder.Services.AddSingleton<IActivityLogRepository, ActivityLogRepository>();
 builder.Services.AddSingleton<AuthService>();
 
 // JWT Authentication
