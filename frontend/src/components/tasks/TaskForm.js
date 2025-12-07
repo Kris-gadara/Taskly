@@ -69,7 +69,6 @@ const TaskForm = ({ isOpen, onClose, onSubmit, initialTask }) => {
               </button>
             </div>
           </Dialog.Title>
-          </Dialog.Title>
 
           <form onSubmit={handleSubmit} className="mt-4 space-y-4">
             <div>
